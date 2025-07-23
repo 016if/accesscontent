@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Secure Video Access</title>
   <style>
     body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; padding: 50px; }
     input[type="text"] { padding: 10px; width: 250px; font-size: 16px; }
     button { padding: 10px 20px; font-size: 16px; margin-top: 10px; }
     #message { margin-top: 20px; font-size: 18px; color: red; }
-    #video, #newAccessButton { margin-top: 20px; display: none; }
+    #video { margin-top: 20px; }
   </style>
 </head>
 <body>
@@ -17,63 +17,38 @@
   <input type="text" id="codeInput" placeholder="Enter your code here" />
   <button onclick="verifyCode()">Access Video</button>
   <div id="message"></div>
-
-  <div id="video">
+  <div id="video" style="display: none;">
     <p>Video Unlocked! Watch below:</p>
-    <iframe id="videoFrame" width="640" height="360" frameborder="0" allowfullscreen></iframe>
+    <iframe src="https://uwcrbc-my.sharepoint.com/personal/rbc24_iman_uwcrobertboschcollege_de/_layouts/15/embed.aspx?UniqueId=0a0d76ff-8540-4954-9342-7fe178a18fdd&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="Wars and conflict 2-20250719_172021-Meeting Recording.mp4" width="640" height="360" frameborder="0" allowfullscreen></iframe>
   </div>
 
-  <button id="newAccessButton" onclick="resetAccess()">Request Access to Another Video</button>
-
   <script>
-    const videoCodes = {
-      "CODE1A": "https://uwcrbc-my.sharepoint.com/personal/rbc24_iman_uwcrobertboschcollege_de/_layouts/15/embed.aspx?UniqueId=0a0d76ff-8540-4954-9342-7fe178a18fdd&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="Wars and conflict 2-20250719_172021-Meeting Recording.mp4",
-      "CODE2A": "https://uwcrbc-my.sharepoint.com/personal/rbc24_iman_uwcrobertboschcollege_de/_layouts/15/embed.aspx?UniqueId=0a0d76ff-8540-4954-9342-7fe178a18fdd&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="Wars and conflict 2-20250719_172021-Meeting Recording.mp4",
-      "CODE3A": "https://uwcrbc-my.sharepoint.com/personal/rbc24_iman_uwcrobertboschcollege_de/_layouts/15/embed.aspx?UniqueId=0a0d76ff-8540-4954-9342-7fe178a18fdd&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="Wars and conflict 2-20250719_172021-Meeting Recording.mp4",
-      "CODE4A": "https://video-url-1.com",
-      "CODE5A": "https://video-url-1.com",
-      "CODE1B": "https://uwcrbc-my.sharepoint.com/personal/rbc24_iman_uwcrobertboschcollege_de/_layouts/15/embed.aspx?UniqueId=eb68d28d-1f9c-4603-8b39-8bc5eb5d169d&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="Discrimination Based on race-20250715_141530-Meeting Recording.mp4",
-      "CODE2B": "https://uwcrbc-my.sharepoint.com/personal/rbc24_iman_uwcrobertboschcollege_de/_layouts/15/embed.aspx?UniqueId=eb68d28d-1f9c-4603-8b39-8bc5eb5d169d&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="Discrimination Based on race-20250715_141530-Meeting Recording.mp4",
-      "CODE3B": "https://uwcrbc-my.sharepoint.com/personal/rbc24_iman_uwcrobertboschcollege_de/_layouts/15/embed.aspx?UniqueId=eb68d28d-1f9c-4603-8b39-8bc5eb5d169d&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="Discrimination Based on race-20250715_141530-Meeting Recording.mp4",
-      "CODE4B": "https://uwcrbc-my.sharepoint.com/personal/rbc24_iman_uwcrobertboschcollege_de/_layouts/15/embed.aspx?UniqueId=eb68d28d-1f9c-4603-8b39-8bc5eb5d169d&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="Discrimination Based on race-20250715_141530-Meeting Recording.mp4",
-      "CODE5B": "https://uwcrbc-my.sharepoint.com/personal/rbc24_iman_uwcrobertboschcollege_de/_layouts/15/embed.aspx?UniqueId=eb68d28d-1f9c-4603-8b39-8bc5eb5d169d&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="Discrimination Based on race-20250715_141530-Meeting Recording.mp4"
+    const validCodes = {
+      "QxcH4": true,
+      "Hftr5": true,
+      "GHjh$": true,
+      "CODE4": true,
+      "CODE5": true,
+      "CODE6": true,
+      "CODE7": true,
+      "CODE8": true,
+      "CODE9": true,
+      "CODE10": true
     };
-
-    const usedCodes = new Set();
-    let videoUnlocked = false;
 
     function verifyCode() {
       const input = document.getElementById("codeInput").value.trim();
       const message = document.getElementById("message");
       const video = document.getElementById("video");
-      const frame = document.getElementById("videoFrame");
-      const newAccessButton = document.getElementById("newAccessButton");
 
-      if (videoUnlocked) {
-        message.innerText = "You have already unlocked a video. Please request new access.";
-        return;
-      }
-
-      if (videoCodes[input] && !usedCodes.has(input)) {
-        usedCodes.add(input);
-        videoUnlocked = true;
-        frame.src = videoCodes[input];
-        video.style.display = "block";
+      if (validCodes[input]) {
         message.innerText = "";
-        newAccessButton.style.display = "block";
+        video.style.display = "block";
+        delete validCodes[input];
       } else {
         message.innerText = "Invalid or already used code.";
         video.style.display = "none";
       }
-    }
-
-    function resetAccess() {
-      document.getElementById("codeInput").value = "";
-      document.getElementById("videoFrame").src = "";
-      document.getElementById("video").style.display = "none";
-      document.getElementById("newAccessButton").style.display = "none";
-      document.getElementById("message").innerText = "";
-      videoUnlocked = false;
     }
   </script>
 </body>
